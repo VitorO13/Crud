@@ -1,0 +1,980 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema de Gestão Empresarial</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .tab-active {
+            background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(30, 58, 138, 0.4);
+        }
+        .tab-inactive {
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+            border: 2px solid #cbd5e1;
+        }
+        .tab-inactive:hover {
+            background: linear-gradient(135deg, #e0f2fe 0%, #bae6fd 100%);
+            transform: translateY(-1px);
+            box-shadow: 0 5px 15px rgba(30, 58, 138, 0.15);
+            border-color: #0ea5e9;
+        }
+        .dashboard-container {
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #334155 100%);
+            min-height: 100vh;
+        }
+        .content-card {
+            backdrop-filter: blur(10px);
+            background: rgba(255, 255, 255, 0.95);
+        }
+        .logo-container {
+            transition: all 0.3s ease;
+        }
+        .logo-container:hover {
+            transform: translateY(-2px);
+            opacity: 1;
+        }
+    </style>
+</head>
+<body class="dashboard-container">
+<div class="min-h-screen flex items-center justify-center p-6">
+    <div class="content-card rounded-2xl shadow-2xl p-8 w-full max-w-6xl">
+        <!-- System Name -->
+        <div class="flex justify-center mb-8">
+            <div class="bg-gradient-to-r from-blue-800 to-blue-900 text-white px-10 py-4 rounded-full shadow-lg cursor-pointer transition-all duration-300 hover:from-blue-900 hover:to-indigo-900 hover:shadow-2xl hover:scale-105 hover:rotate-1">
+                <span class="font-bold text-3xl tracking-wide">Vloome</span>
+            </div>
+            <!-- Módulo Trabalhista -->
+            <div id="modulo-trabalhista" class="hidden">
+                <!-- Logo e Header do Módulo -->
+                <div class="flex flex-col items-center mb-6">
+                    <div class="bg-gradient-to-r from-blue-800 to-blue-900 text-white px-10 py-4 rounded-full shadow-lg cursor-pointer transition-all duration-300 hover:from-blue-900 hover:to-indigo-900 hover:shadow-2xl hover:scale-105 hover:rotate-1 mb-4">
+                        <span class="font-bold text-3xl tracking-wide">Vloome</span>
+                    </div>
+                    <div class="flex justify-between items-center w-full">
+                        <h2 class="text-2xl font-bold text-gray-800">Dashboard Trabalhista</h2>
+                        <button onclick="voltarMenu()" class="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded-lg transition-colors">
+                            ← Voltar ao Menu
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Cards de Resumo Trabalhista -->
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+                    <div class="bg-blue-50 border border-blue-200 rounded-xl p-6">
+                        <p class="text-blue-600 text-sm font-medium">Funcionários Ativos</p>
+                        <p class="text-2xl font-bold text-blue-800">18</p>
+                        <p class="text-blue-600 text-xs mt-2">+2 este mês</p>
+                    </div>
+                    <div class="bg-green-50 border border-green-200 rounded-xl p-6">
+                        <p class="text-green-600 text-sm font-medium">Férias Programadas</p>
+                        <p class="text-2xl font-bold text-green-800">3</p>
+                        <p class="text-green-600 text-xs mt-2">Próximos 30 dias</p>
+                    </div>
+                    <div class="bg-yellow-50 border border-yellow-200 rounded-xl p-6">
+                        <p class="text-yellow-600 text-sm font-medium">13º Salário</p>
+                        <p class="text-2xl font-bold text-yellow-800">R$ 12.500</p>
+                        <p class="text-yellow-600 text-xs mt-2">Previsão Dez/2025</p>
+                    </div>
+                    <div class="bg-red-50 border border-red-200 rounded-xl p-6">
+                        <p class="text-red-600 text-sm font-medium">Obrigações Pendentes</p>
+                        <p class="text-2xl font-bold text-red-800">2</p>
+                        <p class="text-red-600 text-xs mt-2">Atenção!</p>
+                    </div>
+                </div>
+
+                <!-- Ações Rápidas Trabalhista -->
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+                    <div class="bg-white border border-gray-200 rounded-xl p-6">
+                        <h3 class="text-lg font-semibold text-gray-800 mb-4">Ações Rápidas</h3>
+                        <div class="space-y-3">
+                            <button class="w-full bg-blue-500 hover:bg-blue-600 text-white py-3 px-4 rounded-lg transition-colors flex items-center justify-center">
+                                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                                </svg>
+                                Adicionar Funcionário
+                            </button>
+                            <button class="w-full bg-green-500 hover:bg-green-600 text-white py-3 px-4 rounded-lg transition-colors flex items-center justify-center">
+                                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                                </svg>
+                                Registrar Férias
+                            </button>
+                            <button class="w-full bg-yellow-500 hover:bg-yellow-600 text-white py-3 px-4 rounded-lg transition-colors flex items-center justify-center">
+                                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                                </svg>
+                                Gerar Folha de Pagamento
+                            </button>
+                        </div>
+                    </div>
+                    <div class="bg-white border border-gray-200 rounded-xl p-6">
+                        <h3 class="text-lg font-semibold text-gray-800 mb-4">Últimos Eventos</h3>
+                        <div class="space-y-3">
+                            <div class="flex items-center justify-between p-3 bg-blue-50 rounded-lg">
+                                <div>
+                                    <p class="text-sm font-medium text-gray-800">Admissão de Funcionário</p>
+                                    <p class="text-xs text-gray-500">Hoje, 09:00</p>
+                                </div>
+                                <span class="text-blue-600 font-semibold">+1</span>
+                            </div>
+                            <div class="flex items-center justify-between p-3 bg-green-50 rounded-lg">
+                                <div>
+                                    <p class="text-sm font-medium text-gray-800">Férias Registradas</p>
+                                    <p class="text-xs text-gray-500">Ontem, 15:30</p>
+                                </div>
+                                <span class="text-green-600 font-semibold">+1</span>
+                            </div>
+                            <div class="flex items-center justify-between p-3 bg-yellow-50 rounded-lg">
+                                <div>
+                                    <p class="text-sm font-medium text-gray-800">Folha Gerada</p>
+                                    <p class="text-xs text-gray-500">2 dias atrás</p>
+                                </div>
+                                <span class="text-yellow-600 font-semibold">R$ 12.500</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Resumo Mensal Trabalhista -->
+                <div class="bg-white border border-gray-200 rounded-xl p-6">
+                    <h3 class="text-lg font-semibold text-gray-800 mb-4">Resumo Mensal</h3>
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
+                        <div>
+                            <p class="text-2xl font-bold text-blue-600">18</p>
+                            <p class="text-xs text-gray-600">Funcionários</p>
+                        </div>
+                        <div>
+                            <p class="text-2xl font-bold text-green-600">3</p>
+                            <p class="text-xs text-gray-600">Férias</p>
+                        </div>
+                        <div>
+                            <p class="text-2xl font-bold text-yellow-600">R$ 12.500</p>
+                            <p class="text-xs text-gray-600">13º Salário</p>
+                        </div>
+                        <div>
+                            <p class="text-2xl font-bold text-red-600">2</p>
+                            <p class="text-xs text-gray-600">Pendências</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Módulo Chat -->
+            <div id="modulo-chat" class="hidden">
+                <!-- Logo e Header do Módulo -->
+                <div class="flex flex-col items-center mb-6">
+                    <div class="bg-gradient-to-r from-blue-800 to-blue-900 text-white px-10 py-4 rounded-full shadow-lg cursor-pointer transition-all duration-300 hover:from-blue-900 hover:to-indigo-900 hover:shadow-2xl hover:scale-105 hover:rotate-1 mb-4">
+                        <span class="font-bold text-3xl tracking-wide">Vloome</span>
+                    </div>
+                    <div class="flex justify-between items-center w-full">
+                        <h2 class="text-2xl font-bold text-gray-800">Chat com o Contador</h2>
+                        <button onclick="voltarMenu()" class="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded-lg transition-colors">
+                            ← Voltar ao Menu
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Área de Chat -->
+                <div class="bg-white border border-gray-200 rounded-xl p-6 mb-8">
+                    <h3 class="text-lg font-semibold text-gray-800 mb-4">Converse com seu contador</h3>
+                    <div id="chat-messages" class="h-64 overflow-y-auto bg-gray-50 rounded-lg p-4 mb-4">
+                        <div class="flex flex-col space-y-2">
+                            <div class="self-end bg-blue-100 text-blue-800 rounded-lg px-4 py-2 max-w-xs">Olá, preciso de ajuda com a folha de pagamento.</div>
+                            <div class="self-start bg-gray-200 text-gray-800 rounded-lg px-4 py-2 max-w-xs">Claro! Qual a dúvida?</div>
+                        </div>
+                    </div>
+                    <div class="flex items-center">
+                        <input type="text" id="chat-input" class="flex-1 border border-gray-300 rounded-lg px-4 py-2 mr-2 focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Digite sua mensagem...">
+                        <button onclick="enviarMensagemChat()" class="bg-blue-500 hover:bg-blue-600 text-white px-6 py-2 rounded-lg transition-colors">Enviar</button>
+                    </div>
+                </div>
+
+                <!-- Informações do Chat -->
+                <div class="bg-gray-50 border border-gray-200 rounded-xl p-6">
+                    <h3 class="text-lg font-semibold text-gray-800 mb-2">Como funciona?</h3>
+                    <p class="text-gray-600 mb-2">Utilize o chat para tirar dúvidas, enviar documentos e receber orientações do seu contador em tempo real.</p>
+                    <ul class="list-disc list-inside text-gray-600">
+                        <li>Mensagens instantâneas</li>
+                        <li>Histórico de conversas</li>
+                        <li>Envio de arquivos (em breve)</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Menu Principal -->
+        <div id="menu-principal">
+            <!-- Navigation Tabs -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+                <!-- Dashboard Financeiro -->
+                <div class="tab-card tab-inactive rounded-xl p-6 cursor-pointer transition-all duration-300 text-center"
+                     onclick="selectTab('financeiro')" id="tab-financeiro">
+                    <div class="mb-4">
+                        <svg class="w-12 h-12 mx-auto text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                  d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-semibold text-gray-800 mb-2">Financeiro</h3>
+                    <p class="text-gray-600 text-sm">Controle de receitas, despesas e fluxo de caixa</p>
+                </div>
+
+                <!-- Dashboard Fiscal -->
+                <div class="tab-card tab-inactive rounded-xl p-6 cursor-pointer transition-all duration-300 text-center"
+                     onclick="selectTab('fiscal')" id="tab-fiscal">
+                    <div class="mb-4">
+                        <svg class="w-12 h-12 mx-auto text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                  d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-semibold text-gray-800 mb-2">Fiscal</h3>
+                    <p class="text-gray-600 text-sm">Gestão de impostos e obrigações fiscais</p>
+                </div>
+
+                <!-- Dashboard Trabalhista -->
+                <div class="tab-card tab-inactive rounded-xl p-6 cursor-pointer transition-all duration-300 text-center"
+                     onclick="selectTab('trabalhista')" id="tab-trabalhista">
+                    <div class="mb-4">
+                        <svg class="w-12 h-12 mx-auto text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                  d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-semibold text-gray-800 mb-2">Trabalhista</h3>
+                    <p class="text-gray-600 text-sm">Gestão de funcionários e obrigações trabalhistas</p>
+                </div>
+
+                <!-- Chat -->
+                <div class="tab-card tab-inactive rounded-xl p-6 cursor-pointer transition-all duration-300 text-center"
+                     onclick="selectTab('chat')" id="tab-chat">
+                    <div class="mb-4">
+                        <svg class="w-12 h-12 mx-auto text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                  d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-semibold text-gray-800 mb-2">Chat</h3>
+                    <p class="text-gray-600 text-sm">Falar com seu contador</p>
+                </div>
+            </div>
+
+            <!-- Selected Tab Display -->
+            <div id="selected-info" class="text-center p-6 bg-gray-50 rounded-xl border-2 border-dashed border-gray-300">
+                <p class="text-gray-500 text-lg">Selecione uma das abas acima para começar</p>
+            </div>
+        </div>
+
+        <!-- Módulo Financeiro -->
+        <div id="modulo-financeiro" class="hidden">
+            <!-- Header do Módulo -->
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-2xl font-bold text-gray-800">Dashboard Financeiro</h2>
+                <button onclick="voltarMenu()" class="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded-lg transition-colors">
+                    ← Voltar ao Menu
+                </button>
+            </div>
+
+            <!-- Cards de Resumo -->
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+                <div class="bg-green-50 border border-green-200 rounded-xl p-6">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-green-600 text-sm font-medium">Receitas</p>
+                            <p class="text-2xl font-bold text-green-800">R$ 45.230</p>
+                        </div>
+                        <div class="bg-green-100 p-3 rounded-full">
+                            <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 11l5-5m0 0l5 5m-5-5v12"></path>
+                            </svg>
+                        </div>
+                    </div>
+                    <p class="text-green-600 text-xs mt-2">+12% este mês</p>
+                </div>
+
+                <div class="bg-red-50 border border-red-200 rounded-xl p-6">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-red-600 text-sm font-medium">Despesas</p>
+                            <p class="text-2xl font-bold text-red-800">R$ 28.450</p>
+                        </div>
+                        <div class="bg-red-100 p-3 rounded-full">
+                            <svg class="w-6 h-6 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 13l-5 5m0 0l-5-5m5 5V6"></path>
+                            </svg>
+                        </div>
+                    </div>
+                    <p class="text-red-600 text-xs mt-2">+5% este mês</p>
+                </div>
+
+                <div class="bg-blue-50 border border-blue-200 rounded-xl p-6">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-blue-600 text-sm font-medium">Lucro Líquido</p>
+                            <p class="text-2xl font-bold text-blue-800">R$ 16.780</p>
+                        </div>
+                        <div class="bg-blue-100 p-3 rounded-full">
+                            <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 00-2-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+                            </svg>
+                        </div>
+                    </div>
+                    <p class="text-blue-600 text-xs mt-2">+18% este mês</p>
+                </div>
+
+                <div class="bg-purple-50 border border-purple-200 rounded-xl p-6">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-purple-600 text-sm font-medium">Fluxo de Caixa</p>
+                            <p class="text-2xl font-bold text-purple-800">R$ 12.340</p>
+                        </div>
+                        <div class="bg-purple-100 p-3 rounded-full">
+                            <svg class="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1"></path>
+                            </svg>
+                        </div>
+                    </div>
+                    <p class="text-purple-600 text-xs mt-2">Disponível</p>
+                </div>
+            </div>
+
+            <!-- Seção de Ações Rápidas -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+                <!-- Ações Rápidas -->
+                <div class="bg-white border border-gray-200 rounded-xl p-6">
+                    <h3 class="text-lg font-semibold text-gray-800 mb-4">Ações Rápidas</h3>
+                    <div class="space-y-3">
+                        <button class="w-full bg-green-500 hover:bg-green-600 text-white py-3 px-4 rounded-lg transition-colors flex items-center justify-center">
+                            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                            </svg>
+                            Adicionar Receita
+                        </button>
+                        <button class="w-full bg-red-500 hover:bg-red-600 text-white py-3 px-4 rounded-lg transition-colors flex items-center justify-center">
+                            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 12H4"></path>
+                            </svg>
+                            Registrar Despesa
+                        </button>
+                        <button class="w-full bg-blue-500 hover:bg-blue-600 text-white py-3 px-4 rounded-lg transition-colors flex items-center justify-center">
+                            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                            </svg>
+                            Gerar Relatório
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Últimas Transações -->
+                <div class="bg-white border border-gray-200 rounded-xl p-6">
+                    <h3 class="text-lg font-semibold text-gray-800 mb-4">Últimas Transações</h3>
+                    <div class="space-y-3">
+                        <div class="flex items-center justify-between p-3 bg-green-50 rounded-lg">
+                            <div class="flex items-center">
+                                <div class="w-2 h-2 bg-green-500 rounded-full mr-3"></div>
+                                <div>
+                                    <p class="text-sm font-medium text-gray-800">Venda de Produto</p>
+                                    <p class="text-xs text-gray-500">Hoje, 14:30</p>
+                                </div>
+                            </div>
+                            <span class="text-green-600 font-semibold">+R$ 1.250</span>
+                        </div>
+
+                        <div class="flex items-center justify-between p-3 bg-red-50 rounded-lg">
+                            <div class="flex items-center">
+                                <div class="w-2 h-2 bg-red-500 rounded-full mr-3"></div>
+                                <div>
+                                    <p class="text-sm font-medium text-gray-800">Pagamento Fornecedor</p>
+                                    <p class="text-xs text-gray-500">Ontem, 09:15</p>
+                                </div>
+                            </div>
+                            <span class="text-red-600 font-semibold">-R$ 850</span>
+                        </div>
+
+                        <div class="flex items-center justify-between p-3 bg-green-50 rounded-lg">
+                            <div class="flex items-center">
+                                <div class="w-2 h-2 bg-green-500 rounded-full mr-3"></div>
+                                <div>
+                                    <p class="text-sm font-medium text-gray-800">Recebimento Cliente</p>
+                                    <p class="text-xs text-gray-500">Ontem, 16:45</p>
+                                </div>
+                            </div>
+                            <span class="text-green-600 font-semibold">+R$ 2.100</span>
+                        </div>
+
+                        <div class="flex items-center justify-between p-3 bg-red-50 rounded-lg">
+                            <div class="flex items-center">
+                                <div class="w-2 h-2 bg-red-500 rounded-full mr-3"></div>
+                                <div>
+                                    <p class="text-sm font-medium text-gray-800">Aluguel Escritório</p>
+                                    <p class="text-xs text-gray-500">2 dias atrás</p>
+                                </div>
+                            </div>
+                            <span class="text-red-600 font-semibold">-R$ 1.800</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Gráfico Simples -->
+            <div class="bg-white border border-gray-200 rounded-xl p-6">
+                <h3 class="text-lg font-semibold text-gray-800 mb-4">Evolução Mensal</h3>
+                <div class="flex items-end justify-between h-40 bg-gray-50 rounded-lg p-4">
+                    <div class="flex flex-col items-center">
+                        <div class="bg-blue-500 w-8 rounded-t" style="height: 60px;"></div>
+                        <span class="text-xs text-gray-600 mt-2">Jan</span>
+                    </div>
+                    <div class="flex flex-col items-center">
+                        <div class="bg-blue-500 w-8 rounded-t" style="height: 80px;"></div>
+                        <span class="text-xs text-gray-600 mt-2">Fev</span>
+                    </div>
+                    <div class="flex flex-col items-center">
+                        <div class="bg-blue-500 w-8 rounded-t" style="height: 45px;"></div>
+                        <span class="text-xs text-gray-600 mt-2">Mar</span>
+                    </div>
+                    <div class="flex flex-col items-center">
+                        <div class="bg-blue-500 w-8 rounded-t" style="height: 90px;"></div>
+                        <span class="text-xs text-gray-600 mt-2">Abr</span>
+                    </div>
+                    <div class="flex flex-col items-center">
+                        <div class="bg-blue-500 w-8 rounded-t" style="height: 70px;"></div>
+                        <span class="text-xs text-gray-600 mt-2">Mai</span>
+                    </div>
+                    <div class="flex flex-col items-center">
+                        <div class="bg-green-500 w-8 rounded-t" style="height: 110px;"></div>
+                        <span class="text-xs text-gray-600 mt-2">Jun</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Módulo Fiscal -->
+        <div id="modulo-fiscal" class="hidden">
+            <!-- Header do Módulo -->
+            <div class="flex justify-between items-center mb-6">
+                <div class="flex items-center">
+                    <div class="bg-gradient-to-r from-orange-500 to-red-500 p-3 rounded-full mr-4">
+                        <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                        </svg>
+                    </div>
+                    <div>
+                        <h2 class="text-3xl font-bold text-gray-800">Gestão Fiscal</h2>
+                        <p class="text-gray-600">Controle completo de impostos e obrigações</p>
+                    </div>
+                </div>
+                <button onclick="voltarMenu()" class="bg-gray-500 hover:bg-gray-600 text-white px-6 py-3 rounded-lg transition-colors flex items-center">
+                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+                    </svg>
+                    Voltar ao Menu
+                </button>
+            </div>
+
+            <!-- Alertas Importantes -->
+            <div class="mb-6">
+                <div class="bg-red-50 border-l-4 border-red-400 p-4 rounded-lg">
+                    <div class="flex items-center">
+                        <svg class="w-6 h-6 text-red-400 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L4.082 15.5c-.77.833.192 2.5 1.732 2.5z"></path>
+                        </svg>
+                        <div>
+                            <h4 class="text-red-800 font-semibold">Atenção: Vencimentos Próximos!</h4>
+                            <p class="text-red-700 text-sm">Você tem 3 impostos vencendo nos próximos 7 dias. Total: R$ 6.440</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Cards de Status Fiscal -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+                <div class="bg-gradient-to-br from-red-50 to-red-100 border border-red-200 rounded-xl p-6 hover:shadow-lg transition-shadow">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-red-600 text-sm font-medium">Impostos Pendentes</p>
+                            <p class="text-3xl font-bold text-red-800">R$ 8.450</p>
+                            <p class="text-red-600 text-xs mt-1">4 guias em aberto</p>
+                        </div>
+                        <div class="bg-red-200 p-3 rounded-full">
+                            <svg class="w-8 h-8 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-gradient-to-br from-green-50 to-green-100 border border-green-200 rounded-xl p-6 hover:shadow-lg transition-shadow">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-green-600 text-sm font-medium">Impostos Pagos</p>
+                            <p class="text-3xl font-bold text-green-800">R$ 15.230</p>
+                            <p class="text-green-600 text-xs mt-1">Este mês</p>
+                        </div>
+                        <div class="bg-green-200 p-3 rounded-full">
+                            <svg class="w-8 h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-gradient-to-br from-blue-50 to-blue-100 border border-blue-200 rounded-xl p-6 hover:shadow-lg transition-shadow">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-blue-600 text-sm font-medium">Economia Fiscal</p>
+                            <p class="text-3xl font-bold text-blue-800">R$ 2.340</p>
+                            <p class="text-blue-600 text-xs mt-1">Este mês</p>
+                        </div>
+                        <div class="bg-blue-200 p-3 rounded-full">
+                            <svg class="w-8 h-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-gradient-to-br from-purple-50 to-purple-100 border border-purple-200 rounded-xl p-6 hover:shadow-lg transition-shadow">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-purple-600 text-sm font-medium">Regime Tributário</p>
+                            <p class="text-xl font-bold text-purple-800">Simples Nacional</p>
+                            <p class="text-purple-600 text-xs mt-1">Anexo III - Ativo</p>
+                        </div>
+                        <div class="bg-purple-200 p-3 rounded-full">
+                            <svg class="w-8 h-8 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.586-4.414A2 2 0 0118 5.414v6.172a2 2 0 01-.586 1.414l-4 4a2 2 0 01-1.414.586H6a2 2 0 01-2-2V9a2 2 0 012-2h6.172a2 2 0 011.414.586l4 4z"></path>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Menu de Navegação Fiscal -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+                <button onclick="abrirSecaoFiscal('guias')" class="bg-white border-2 border-orange-200 hover:border-orange-400 rounded-xl p-4 text-center transition-all hover:shadow-lg">
+                    <div class="bg-orange-100 p-3 rounded-full mx-auto mb-3 w-fit">
+                        <svg class="w-6 h-6 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                        </svg>
+                    </div>
+                    <h4 class="font-semibold text-gray-800">Guias e DAS</h4>
+                    <p class="text-xs text-gray-600 mt-1">Gerar e consultar guias</p>
+                </button>
+
+                <button onclick="abrirSecaoFiscal('calendario')" class="bg-white border-2 border-green-200 hover:border-green-400 rounded-xl p-4 text-center transition-all hover:shadow-lg">
+                    <div class="bg-green-100 p-3 rounded-full mx-auto mb-3 w-fit">
+                        <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                        </svg>
+                    </div>
+                    <h4 class="font-semibold text-gray-800">Calendário</h4>
+                    <p class="text-xs text-gray-600 mt-1">Datas importantes</p>
+                </button>
+
+                <button onclick="abrirSecaoFiscal('relatorios')" class="bg-white border-2 border-purple-200 hover:border-purple-400 rounded-xl p-4 text-center transition-all hover:shadow-lg">
+                    <div class="bg-purple-100 p-3 rounded-full mx-auto mb-3 w-fit">
+                        <svg class="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 00-2-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+                        </svg>
+                    </div>
+                    <h4 class="font-semibold text-gray-800">Relatórios</h4>
+                    <p class="text-xs text-gray-600 mt-1">Análises fiscais</p>
+                </button>
+            </div>
+
+            <!-- Seção de Conteúdo Dinâmico -->
+            <div id="conteudo-fiscal">
+                <!-- Próximos Vencimentos (Padrão) -->
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                    <!-- Próximos Vencimentos -->
+                    <div class="bg-white border border-gray-200 rounded-xl p-6 shadow-sm">
+                        <div class="flex items-center justify-between mb-4">
+                            <h3 class="text-lg font-semibold text-gray-800">Próximos Vencimentos</h3>
+                            <span class="bg-red-100 text-red-800 text-xs px-2 py-1 rounded-full">4 pendentes</span>
+                        </div>
+                        <div class="space-y-3">
+                            <div class="flex items-center justify-between p-4 bg-red-50 rounded-lg border-l-4 border-red-400">
+                                <div class="flex items-center">
+                                    <div class="bg-red-500 p-2 rounded-full mr-3">
+                                        <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                        </svg>
+                                    </div>
+                                    <div>
+                                        <p class="text-sm font-semibold text-gray-800">DAS - Simples Nacional</p>
+                                        <p class="text-xs text-red-600 font-medium">Vence HOJE - 20/06/2024</p>
+                                    </div>
+                                </div>
+                                <div class="text-right">
+                                    <span class="text-red-600 font-bold text-lg">R$ 3.450</span>
+                                    <button class="block text-xs text-red-600 hover:text-red-800 mt-1">Pagar agora</button>
+                                </div>
+                            </div>
+
+                            <div class="flex items-center justify-between p-4 bg-orange-50 rounded-lg border-l-4 border-orange-400">
+                                <div class="flex items-center">
+                                    <div class="bg-orange-500 p-2 rounded-full mr-3">
+                                        <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                        </svg>
+                                    </div>
+                                    <div>
+                                        <p class="text-sm font-semibold text-gray-800">ICMS - Estado</p>
+                                        <p class="text-xs text-orange-600 font-medium">Vence em 3 dias - 23/06</p>
+                                    </div>
+                                </div>
+                                <div class="text-right">
+                                    <span class="text-orange-600 font-bold text-lg">R$ 2.100</span>
+                                    <button class="block text-xs text-orange-600 hover:text-orange-800 mt-1">Ver detalhes</button>
+                                </div>
+                            </div>
+
+                            <div class="flex items-center justify-between p-4 bg-yellow-50 rounded-lg border-l-4 border-yellow-400">
+                                <div class="flex items-center">
+                                    <div class="bg-yellow-500 p-2 rounded-full mr-3">
+                                        <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                        </svg>
+                                    </div>
+                                    <div>
+                                        <p class="text-sm font-semibold text-gray-800">ISS - Município</p>
+                                        <p class="text-xs text-yellow-600 font-medium">Vence em 6 dias - 26/06</p>
+                                    </div>
+                                </div>
+                                <div class="text-right">
+                                    <span class="text-yellow-600 font-bold text-lg">R$ 890</span>
+                                    <button class="block text-xs text-yellow-600 hover:text-yellow-800 mt-1">Ver detalhes</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Resumo Mensal -->
+                    <div class="bg-white border border-gray-200 rounded-xl p-6 shadow-sm">
+                        <h3 class="text-lg font-semibold text-gray-800 mb-4">Resumo Fiscal - Junho 2024</h3>
+
+                        <div class="space-y-4">
+                            <div class="flex justify-between items-center p-3 bg-gray-50 rounded-lg">
+                                <span class="text-gray-700">Total de Impostos</span>
+                                <span class="font-semibold text-gray-800">R$ 23.680</span>
+                            </div>
+
+                            <div class="flex justify-between items-center p-3 bg-green-50 rounded-lg">
+                                <span class="text-green-700">Já Pagos</span>
+                                <span class="font-semibold text-green-800">R$ 15.230</span>
+                            </div>
+
+                            <div class="flex justify-between items-center p-3 bg-red-50 rounded-lg">
+                                <span class="text-red-700">Pendentes</span>
+                                <span class="font-semibold text-red-800">R$ 8.450</span>
+                            </div>
+
+                            <div class="mt-4 bg-gray-100 rounded-lg p-3">
+                                <div class="flex justify-between text-sm text-gray-600 mb-2">
+                                    <span>Progresso de Pagamentos</span>
+                                    <span>64%</span>
+                                </div>
+                                <div class="w-full bg-gray-200 rounded-full h-2">
+                                    <div class="bg-green-500 h-2 rounded-full" style="width: 64%"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Logo no canto superior direito -->
+    <div class="fixed top-6 right-6 z-50">
+        <div class="logo-container opacity-90 hover:opacity-100">
+            <img src="https://i.imgur.com/Gp22YY0.png"
+                 alt="Lyel System Logo"
+                 class="h-16 w-auto max-w-none"
+                 crossorigin="anonymous"
+                 onload="console.log('Logo carregada com sucesso!')"
+                 onerror="console.log('Erro ao carregar logo:', this.src); this.style.display='none';">
+        </div>
+    </div>
+</div>
+
+<script>
+    let selectedTab = null;
+
+    function selectTab(tabName) {
+        // Esconder menu principal e todos os módulos
+        document.getElementById('menu-principal').style.display = 'none';
+        document.getElementById('modulo-financeiro').classList.add('hidden');
+        document.getElementById('modulo-fiscal').classList.add('hidden');
+        document.getElementById('modulo-trabalhista').classList.add('hidden');
+        document.getElementById('modulo-chat').classList.add('hidden');
+
+        // Exibir módulo selecionado
+        if (tabName === 'financeiro') {
+            document.getElementById('modulo-financeiro').classList.remove('hidden');
+        } else if (tabName === 'fiscal') {
+            document.getElementById('modulo-fiscal').classList.remove('hidden');
+        } else if (tabName === 'trabalhista') {
+            document.getElementById('modulo-trabalhista').classList.remove('hidden');
+        } else if (tabName === 'chat') {
+            document.getElementById('modulo-chat').classList.remove('hidden');
+        }
+
+        // Reset all tabs
+        const tabs = ['financeiro', 'fiscal', 'trabalhista', 'chat'];
+        tabs.forEach(tab => {
+            const element = document.getElementById('tab-' + tab);
+            element.className = element.className.replace('tab-active', 'tab-inactive');
+            const svg = element.querySelector('svg');
+            svg.className = svg.className.replace('text-white', 'text-gray-600');
+            const title = element.querySelector('h3');
+            title.className = title.className.replace('text-white', 'text-gray-800');
+            const desc = element.querySelector('p');
+            desc.className = desc.className.replace('text-gray-200', 'text-gray-600');
+        });
+
+        // Activate selected tab
+        const selectedElement = document.getElementById('tab-' + tabName);
+        selectedElement.className = selectedElement.className.replace('tab-inactive', 'tab-active');
+        const selectedSvg = selectedElement.querySelector('svg');
+        selectedSvg.className = selectedSvg.className.replace('text-gray-600', 'text-white');
+        const selectedTitle = selectedElement.querySelector('h3');
+        selectedTitle.className = selectedTitle.className.replace('text-gray-800', 'text-white');
+        const selectedDesc = selectedElement.querySelector('p');
+        selectedDesc.className = selectedDesc.className.replace('text-gray-600', 'text-gray-200');
+
+        selectedTab = tabName;
+
+        // Update info display
+        const infoDiv = document.getElementById('selected-info');
+        const tabNames = {
+            'financeiro': 'Financeiro',
+            'fiscal': 'Fiscal',
+            'trabalhista': 'Trabalhista',
+            'chat': 'Chat'
+        };
+        const descriptions = {
+            'financeiro': 'Aqui você poderá acompanhar receitas, despesas, fluxo de caixa e indicadores financeiros da empresa.',
+            'fiscal': 'Gerencie impostos, guias de recolhimento, obrigações fiscais e mantenha-se em dia com o fisco.',
+            'trabalhista': 'Controle folha de pagamento, funcionários, férias, 13º salário e demais obrigações trabalhistas.',
+            'chat': 'Converse diretamente com seu contador para esclarecer dúvidas e receber orientações personalizadas.'
+        };
+        infoDiv.innerHTML = `
+            <div class="text-center">
+                <h4 class="text-xl font-semibold text-gray-800 mb-2">${tabNames[tabName]} Selecionado</h4>
+                <p class="text-gray-600">${descriptions[tabName]}</p>
+            </div>
+        `;
+    }
+
+    function voltarMenu() {
+        // Esconder todos os módulos
+        document.getElementById('modulo-financeiro').classList.add('hidden');
+        document.getElementById('modulo-fiscal').classList.add('hidden');
+        document.getElementById('modulo-trabalhista').classList.add('hidden');
+        document.getElementById('modulo-chat').classList.add('hidden');
+
+        // Mostrar menu principal
+        document.getElementById('menu-principal').style.display = 'block';
+
+        // Reset selected info
+        document.getElementById('selected-info').innerHTML = `
+            <p class="text-gray-500 text-lg">Selecione uma das abas acima para começar</p>
+        `;
+    }
+
+    function abrirSecaoFiscal(secao) {
+        const conteudoDiv = document.getElementById('conteudo-fiscal');
+
+        switch(secao) {
+            case 'guias':
+                conteudoDiv.innerHTML = `
+                    <div class="bg-white border border-gray-200 rounded-xl p-6">
+                        <h3 class="text-xl font-semibold text-gray-800 mb-6">Guias e DAS</h3>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                            <button class="bg-orange-500 hover:bg-orange-600 text-white p-4 rounded-lg transition-colors">
+                                <h4 class="font-semibold mb-2">Gerar DAS Simples Nacional</h4>
+                                <p class="text-sm opacity-90">Gere sua guia DAS para o mês atual</p>
+                            </button>
+
+                            <button class="bg-blue-500 hover:bg-blue-600 text-white p-4 rounded-lg transition-colors">
+                                <h4 class="font-semibold mb-2">Consultar Guias Pagas</h4>
+                                <p class="text-sm opacity-90">Histórico de pagamentos realizados</p>
+                            </button>
+                        </div>
+
+                        <div class="bg-gray-50 rounded-lg p-4">
+                            <h4 class="font-semibold text-gray-800 mb-3">Últimas Guias Geradas</h4>
+                            <div class="space-y-2">
+                                <div class="flex justify-between items-center p-2 bg-white rounded">
+                                    <span class="text-sm">DAS Junho/2024</span>
+                                    <span class="text-sm text-orange-600">R$ 3.450 - Pendente</span>
+                                </div>
+                                <div class="flex justify-between items-center p-2 bg-white rounded">
+                                    <span class="text-sm">DAS Maio/2024</span>
+                                    <span class="text-sm text-green-600">R$ 3.200 - Pago</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                break;
+
+
+
+            case 'calendario':
+                conteudoDiv.innerHTML = `
+                    <div class="bg-white border border-gray-200 rounded-xl p-6">
+                        <h3 class="text-xl font-semibold text-gray-800 mb-6">Calendário Fiscal 2024</h3>
+
+                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                            <div>
+                                <h4 class="font-semibold text-gray-800 mb-4">Junho 2024</h4>
+                                <div class="grid grid-cols-7 gap-1 text-center text-sm">
+                                    <div class="p-2 font-semibold text-gray-600">D</div>
+                                    <div class="p-2 font-semibold text-gray-600">S</div>
+                                    <div class="p-2 font-semibold text-gray-600">T</div>
+                                    <div class="p-2 font-semibold text-gray-600">Q</div>
+                                    <div class="p-2 font-semibold text-gray-600">Q</div>
+                                    <div class="p-2 font-semibold text-gray-600">S</div>
+                                    <div class="p-2 font-semibold text-gray-600">S</div>
+
+                                    <div class="p-2 text-gray-400"></div>
+                                    <div class="p-2 text-gray-400"></div>
+                                    <div class="p-2 text-gray-400"></div>
+                                    <div class="p-2 text-gray-400"></div>
+                                    <div class="p-2 text-gray-400"></div>
+                                    <div class="p-2">1</div>
+                                    <div class="p-2">2</div>
+
+                                    <div class="p-2">3</div>
+                                    <div class="p-2">4</div>
+                                    <div class="p-2">5</div>
+                                    <div class="p-2">6</div>
+                                    <div class="p-2">7</div>
+                                    <div class="p-2">8</div>
+                                    <div class="p-2">9</div>
+
+                                    <div class="p-2">10</div>
+                                    <div class="p-2">11</div>
+                                    <div class="p-2">12</div>
+                                    <div class="p-2">13</div>
+                                    <div class="p-2">14</div>
+                                    <div class="p-2">15</div>
+                                    <div class="p-2">16</div>
+
+                                    <div class="p-2">17</div>
+                                    <div class="p-2">18</div>
+                                    <div class="p-2">19</div>
+                                    <div class="p-2 bg-red-100 text-red-800 rounded font-semibold">20</div>
+                                    <div class="p-2">21</div>
+                                    <div class="p-2">22</div>
+                                    <div class="p-2 bg-orange-100 text-orange-800 rounded font-semibold">23</div>
+
+                                    <div class="p-2">24</div>
+                                    <div class="p-2">25</div>
+                                    <div class="p-2 bg-yellow-100 text-yellow-800 rounded font-semibold">26</div>
+                                    <div class="p-2">27</div>
+                                    <div class="p-2">28</div>
+                                    <div class="p-2">29</div>
+                                    <div class="p-2">30</div>
+                                </div>
+                            </div>
+
+                            <div>
+                                <h4 class="font-semibold text-gray-800 mb-4">Eventos do Mês</h4>
+                                <div class="space-y-3">
+                                    <div class="flex items-center p-3 bg-red-50 rounded-lg">
+                                        <div class="w-3 h-3 bg-red-500 rounded-full mr-3"></div>
+                                        <div>
+                                            <p class="text-sm font-medium">20/06 - DAS Simples Nacional</p>
+                                            <p class="text-xs text-red-600">Vencimento hoje!</p>
+                                        </div>
+                                    </div>
+
+                                    <div class="flex items-center p-3 bg-orange-50 rounded-lg">
+                                        <div class="w-3 h-3 bg-orange-500 rounded-full mr-3"></div>
+                                        <div>
+                                            <p class="text-sm font-medium">23/06 - ICMS Estado</p>
+                                            <p class="text-xs text-orange-600">Em 3 dias</p>
+                                        </div>
+                                    </div>
+
+                                    <div class="flex items-center p-3 bg-yellow-50 rounded-lg">
+                                        <div class="w-3 h-3 bg-yellow-500 rounded-full mr-3"></div>
+                                        <div>
+                                            <p class="text-sm font-medium">26/06 - ISS Municipal</p>
+                                            <p class="text-xs text-yellow-600">Em 6 dias</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                break;
+
+            case 'relatorios':
+                conteudoDiv.innerHTML = `
+                    <div class="bg-white border border-gray-200 rounded-xl p-6">
+                        <h3 class="text-xl font-semibold text-gray-800 mb-6">Relatórios Fiscais</h3>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                            <button class="border border-purple-200 hover:border-purple-400 rounded-lg p-4 text-left transition-colors">
+                                <h4 class="font-semibold text-purple-800 mb-2">Relatório de Impostos Pagos</h4>
+                                <p class="text-sm text-gray-600">Histórico completo de pagamentos fiscais</p>
+                            </button>
+
+                            <button class="border border-blue-200 hover:border-blue-400 rounded-lg p-4 text-left transition-colors">
+                                <h4 class="font-semibold text-blue-800 mb-2">Análise de Carga Tributária</h4>
+                                <p class="text-sm text-gray-600">Percentual de impostos sobre faturamento</p>
+                            </button>
+
+                            <button class="border border-green-200 hover:border-green-400 rounded-lg p-4 text-left transition-colors">
+                                <h4 class="font-semibold text-green-800 mb-2">Projeção Fiscal</h4>
+                                <p class="text-sm text-gray-600">Estimativa de impostos futuros</p>
+                            </button>
+
+                            <button class="border border-orange-200 hover:border-orange-400 rounded-lg p-4 text-left transition-colors">
+                                <h4 class="font-semibold text-orange-800 mb-2">Comparativo Anual</h4>
+                                <p class="text-sm text-gray-600">Evolução dos impostos por período</p>
+                            </button>
+                        </div>
+
+                        <div class="bg-gray-50 rounded-lg p-4">
+                            <h4 class="font-semibold text-gray-800 mb-3">Resumo Rápido - Junho 2024</h4>
+                            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
+                                <div>
+                                    <p class="text-2xl font-bold text-green-600">R$ 15.230</p>
+                                    <p class="text-xs text-gray-600">Impostos Pagos</p>
+                                </div>
+                                <div>
+                                    <p class="text-2xl font-bold text-red-600">R$ 8.450</p>
+                                    <p class="text-xs text-gray-600">Pendentes</p>
+                                </div>
+                                <div>
+                                    <p class="text-2xl font-bold text-blue-600">12,5%</p>
+                                    <p class="text-xs text-gray-600">Carga Tributária</p>
+                                </div>
+                                <div>
+                                    <p class="text-2xl font-bold text-purple-600">R$ 23.680</p>
+                                    <p class="text-xs text-gray-600">Total do Mês</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                break;
+        }
+    }
+</script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'97f8f8d654162524',t:'MTc1Nzk0ODE5OS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
