@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login - Vloome</title>
+  <link rel="stylesheet" href="style.css">
+
+</head>
+<body>
+
+  <div class="login-container">
+    <div class="logo">Vloome</div>
+    <h2>Login In</h2>
+    <form>
+      <div class="input-group">
+        <label for="usuario">Usuário</label>
+        <input type="text" id="usuario" name="usuario" placeholder="Digite seu usuário" required>
+      </div>
+      <div class="input-group">
+        <label for="senha">Senha</label>
+        <input type="password" id="senha" name="senha" placeholder="Digite sua senha" required>
+      </div>
+      <button type="submit" class="btn-login">Entrar</button>
+    </form>
+    <a href="#" class="support-btn">Contato com Suporte</a>
+    <div class="info-text">
+      Novos usuários são cadastrados diretamente pelo administrador do sistema.
+    </div>
+  </div>
+
+</body>
+<style>
+  
+  /* Reset */
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Segoe UI", Arial, sans-serif;
+  }
+
+  body {
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(135deg, #1e3c72, #2a5298);
+    color: #fff;
+  }
+
+  .login-container {
+    background: #ffffff;
+    color: #333;
+    border-radius: 15px;
+    box-shadow: 0 6px 15px rgba(0,0,0,0.2);
+    padding: 40px;
+    width: 350px;
+    text-align: center;
+  }
+
+  .logo {
+    font-size: 32px;
+    font-weight: bold;
+    color: #1e3c72;
+    margin-bottom: 20px;
+  }
+
+  h2 {
+    margin-bottom: 25px;
+    font-size: 22px;
+    color: #2a5298;
+  }
+
+  .input-group {
+    margin-bottom: 20px;
+    text-align: left;
+  }
+
+  .input-group label {
+    font-size: 14px;
+    color: #2a5298;
+    font-weight: 500;
+    display: block;
+    margin-bottom: 5px;
+  }
+
+  .input-group input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    outline: none;
+    transition: 0.3s;
+  }
+
+  .input-group input:focus {
+    border-color: #1e3c72;
+  }
+
+  .btn-login {
+    width: 100%;
+    padding: 12px;
+    background: #1e3c72;
+    color: #fff;
+    font-size: 16px;
+    font-weight: bold;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: 0.3s;
+  }
+
+  .btn-login:hover {
+    background: #2a5298;
+  }
+
+  .support-btn {
+    margin-top: 15px;
+    display: inline-block;
+    text-decoration: none;
+    font-size: 14px;
+    color: #1e3c72;
+    font-weight: bold;
+    border: 1px solid #1e3c72;
+    padding: 8px 16px;
+    border-radius: 6px;
+    transition: 0.3s;
+  }
+
+  .support-btn:hover {
+    background: #1e3c72;
+    color: #fff;
+  }
+
+  .info-text {
+    font-size: 12px;
+    margin-top: 20px;
+    color: #666;
+  }
+
+</style>
+
+</html>
